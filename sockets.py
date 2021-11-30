@@ -28,7 +28,7 @@ app.debug = True
 
 
 # https://github.com/uofa-cmput404/cmput404-slides/blob/master/examples/WebSocketsExamples/broadcaster.py
-clients = list()
+clients = []
 
 
 def send_all(msg):
@@ -90,12 +90,14 @@ myWorld = World()
 
 def set_listener(entity, data):
     ''' do something with the update ! '''
+    msg = json.dumps({entity: data})
+    send_all(msg)
 
 
 myWorld.add_set_listener(set_listener)
 
 
-@app.route('/')
+@ app.route('/')
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
     return redirect("/static/index.html", code=301)
@@ -111,8 +113,7 @@ def read_ws(ws, client):
             if(msg is not None):
                 packet = json.loads(msg)
                 send_all_json(packet)
-                if(msg == "myworld"):
-                    send_all_json(myWorld.world())
+
             else:
                 break
 
@@ -120,7 +121,7 @@ def read_ws(ws, client):
         '''return None'''
 
 
-@sockets.route('/subscribe')
+@ sockets.route('/subscribe')
 def subscribe_socket(ws):
     '''Fufill the websocket URL of /subscribe, every update notify the
        websocket and read updates from the websocket '''
@@ -154,7 +155,7 @@ def flask_post_json():
         return json.loads(request.form.keys()[0])
 
 
-@app.route("/entity/<entity>", methods=['POST', 'PUT'])
+@ app.route("/entity/<entity>", methods=['POST', 'PUT'])
 def update(entity):
     '''update the entities via this interface'''
     myWorld.set(entity, flask_post_json())
@@ -162,14 +163,14 @@ def update(entity):
     return jsonify(result)
 
 
-@app.route("/world", methods=['POST', 'GET'])
+@ app.route("/world", methods=['POST', 'GET'])
 def world():
     '''you should probably return the world here'''
     result = myWorld.world()
     return jsonify(result)
 
 
-@app.route("/entity/<entity>")
+@ app.route("/entity/<entity>")
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
 
@@ -177,7 +178,7 @@ def get_entity(entity):
     return jsonify(gets)
 
 
-@app.route("/clear", methods=['POST', 'GET'])
+@ app.route("/clear", methods=['POST', 'GET'])
 def clear():
     '''Clear the world out!'''
     myWorld.clear()
