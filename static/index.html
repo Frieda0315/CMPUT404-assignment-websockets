@@ -20,12 +20,7 @@
   </head>
   <body bgcolor="white" height="100%" width="100%">
     <div id="debug"></div>
-    <div>
-      <h1>Choose Your Color :)</h1>
-      <input type="color" id="PenColor" value="white" /><br /><br />
 
-      <button onclick="clearFrameButton()">Clear</button>
-    </div>
     <canvas
       id="c"
       width="100%"
@@ -61,14 +56,15 @@
           //moveTo(x,y);
           fillStyle = entity["colour"];
           strokeStyle = fillStyle;
-          arc(
-            x,
-            y,
-            entity["radius"] ? entity["radius"] : 50,
-            0,
-            2.0 * Math.PI,
-            false
-          );
+          rect(x, y, 150, 100);
+          // arc(
+          //   x,
+          //   y,
+          //   entity["radius"] ? entity["radius"] : 50,
+          //   0,
+          //   2.0 * Math.PI,
+          //   false
+          // );
           stroke();
         }
       }
@@ -248,21 +244,20 @@
       // Add the application specific mouse listeners!
       //XXX: TODO Make these prettier!
       mouse.mousedowners.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "blue" });
+        addEntityWithoutName({ x: x, y: y, colour: "yellow" });
       });
 
       mouse.mouseuppers.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "red" });
+        addEntityWithoutName({ x: x, y: y, colour: "yellow" });
       });
 
       mouse.mousedraggers.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "green", radius: 10 });
+        addEntityWithoutName({ x: x, y: y, colour: "bule", radius: 5 });
       });
 
       function update() {
         drawFrame();
       }
-
       function wsSetup() {
         var url = "ws://" + host + "/subscribe";
         socket = new WebSocket(url);
