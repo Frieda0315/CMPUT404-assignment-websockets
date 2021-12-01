@@ -96,6 +96,8 @@ def set_listener(entity, data):
 
 myWorld.add_set_listener(set_listener)
 
+# https://github.com/Frieda0315/CMPUT404-assignment-ajax
+
 
 @ app.route('/')
 def hello():
